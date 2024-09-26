@@ -3,7 +3,7 @@
 
 https://github.com/user-attachments/assets/f500287b-b785-42bb-92d8-6d90b5602d6b
 
-Whether you're an AI/ML Developer, aspiring to design the next Roomba, or interested in delving into robotics, there's no need to invest thousands of dollars in a physical robot and attempt to train it in your living space. With Lucky, you can master the art of training your robot, simulate its behavior with up to 90% accuracy, and then reach out to the robot's manufacturer to launch your new company.
+Whether you're an AI/ML Developer, aspiring to design the next Roomba, or interested in robotics, there's no need to invest thousands of dollars in a physical robot and attempt to train it in your living space. With Lucky, you can master the art of training your robot, simulate its behavior with up to 90% accuracy, and then reach out to the robot's manufacturer to launch your new company.
 
 Lucky Robots will feed robot's cameras to your Python application, and you can control the robot using your end to end AI Models. Details below.
 
