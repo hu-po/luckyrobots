@@ -1,8 +1,25 @@
 import luckyrobots as lr
 import cv2
 import numpy as np
-from ultralytics import YOLO
-model = YOLO("YOLOv10n.pt")
+import requests
+import torch
+from PIL import Image
+from transformers import MllamaForConditionalGeneration, AutoProcessor
+
+model_id = "meta-llama/Llama-3.2-11B-Vision"
+
+model = MllamaForConditionalGeneration.from_pretrained(
+    model_id,
+    torch_dtype=torch.bfloat16,
+    device_map="auto",
+)
+processor = AutoProcessor.from_pretrained(model_id)
+
+prompt = """<|image|><|begin_of_text|>If I had to write a haiku for this one
+
+
+"""
+
 
 @lr.on("robot_output")
 def handle_file_created(robot_images: list):
@@ -35,6 +52,11 @@ def handle_file_created(robot_images: list):
                 
                 # Display the image
                 cv2.imshow('Robot Image', img)
+
+                inputs = processor(image, prompt, return_tensors="pt").to(model.device)
+
+                output = model.generate(**inputs, max_new_tokens=30)
+                print(processor.decode(output[0]))
                 
                 cv2.waitKey(1)  # Wait for 1ms to allow the image to be displayed
             else:
@@ -67,5 +89,7 @@ def handle_tasks_complete(id):
 @lr.on("firehose")
 def handle_firehose(data):
     # print(f"Firehose: {data}")
-    pass 
-lr.start()
+    pass
+
+if __name__ == "__main__":
+    lr.start()
