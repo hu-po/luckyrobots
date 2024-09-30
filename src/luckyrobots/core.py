@@ -9,6 +9,7 @@ import psutil
 import tempfile
 import atexit
 import platform
+import functools
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -25,15 +26,17 @@ def send_message(commands):
     for command in commands:
         create_instructions(command)
 
-def start(binary_path=None, send_bytes=False):
+def start(
+    binary_path: str = None,
+    send_bytes: str = False,
+    sim_addr: str = "localhost",
+    sim_port: int = 3000,
+):
     if binary_path is None:
         binary_path = check_binary()    
     if not os.path.exists(binary_path):
         print(f"I couldn't find the binary at {binary_path}, are you sure it's running and capture mode is on?")
         os._exit(1)
-    
-
-
 
     if sys.platform == "darwin":  # macOS
         directory_to_watch = os.path.join(binary_path, "luckyrobots.app", "Contents", "UE", "luckyrobots", "robotdata")
@@ -54,7 +57,7 @@ def start(binary_path=None, send_bytes=False):
     library_dev()
 
     # Run the server in a separate thread
-    server_thread = threading.Thread(target=run_server, daemon=True)
+    server_thread = threading.Thread(target=functools.partial(run_server, port=sim_port), daemon=True)
     server_thread.start()
     
     # Wait for the server to start
@@ -63,7 +66,7 @@ def start(binary_path=None, send_bytes=False):
     while time.time() - start_time < max_wait_time:
         try:
             # Try to connect to the server
-            with socket.create_connection(("localhost", 3000), timeout=1):
+            with socket.create_connection((sim_addr, sim_port), timeout=1):
                 break
         except (ConnectionRefusedError, socket.timeout):
             time.sleep(0.1)

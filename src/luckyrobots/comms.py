@@ -8,7 +8,7 @@ import logging
 from .event_handler import event_emitter  # Import the event_emitter from event_handler.py
 
 app = FastAPI()
-port = 3000
+DEFAULT_PORT:int = 3000
 tasks = []
 tasks_index = 0
 
@@ -152,7 +152,9 @@ async def handle_get():
     else:
         return JSONResponse(content={"LuckyCode": []})
 
-def run_server():
+def run_server(
+    port: int = DEFAULT_PORT,
+):
     # commands = [
     #     ["W 1 1"]
     # ]
