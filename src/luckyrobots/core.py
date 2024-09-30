@@ -28,9 +28,10 @@ def send_message(commands):
 
 def start(
     binary_path: str = None,
-    send_bytes: str = False,
+    send_bytes: bool = False,
     sim_addr: str = "localhost",
     sim_port: int = 3000,
+    connect_to_existing_sim: bool = False,
 ):
     if binary_path is None:
         binary_path = check_binary()    
@@ -48,17 +49,18 @@ def start(
         
     Handler.set_send_bytes(send_bytes)
     
-    if is_luckeworld_running():
-        print("LuckyRobots is already running. Skipping launch.")
-    else:
-        # Start the LuckEWorld executable
-        run_luckeworld_executable(directory_to_watch)
+    if connect_to_existing_sim:
+        if is_luckeworld_running():
+            print("LuckyRobots is already running. Skipping launch.")
+        else:
+            # Start the LuckEWorld executable
+            run_luckeworld_executable(directory_to_watch)
 
-    library_dev()
+        library_dev()
 
-    # Run the server in a separate thread
-    server_thread = threading.Thread(target=functools.partial(run_server, port=sim_port), daemon=True)
-    server_thread.start()
+        # Run the server in a separate thread
+        server_thread = threading.Thread(target=functools.partial(run_server, port=sim_port), daemon=True)
+        server_thread.start()
     
     # Wait for the server to start
     max_wait_time = 10  # Maximum wait time in seconds
