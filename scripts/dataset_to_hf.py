@@ -1,4 +1,11 @@
-# Uploads a locally recorded LuckyRobot dataset to HuggingFace
+"""
+Uploads a locally recorded LuckyRobot dataset to HuggingFace
+
+pip install transformers
+pip install datasets
+huggingface-cli login
+"""
+
 import os
 import json
 from datasets import Dataset, DatasetDict
