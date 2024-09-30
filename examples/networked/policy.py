@@ -59,7 +59,8 @@ if __name__ == '__main__':
     lr.start(
         sim_addr="192.168.1.8",
         sim_port=3000,
-        connect_to_existing_sim=True,
+        is_sim=False,
+        is_policy=True,
     )
 
 

@@ -31,7 +31,8 @@ def start(
     send_bytes: bool = False,
     sim_addr: str = "localhost",
     sim_port: int = 3000,
-    connect_to_existing_sim: bool = False,
+    is_sim: bool = True,
+    is_policy: bool = True,
 ):
     if binary_path is None:
         binary_path = check_binary()    
@@ -49,7 +50,7 @@ def start(
         
     Handler.set_send_bytes(send_bytes)
     
-    if connect_to_existing_sim:
+    if is_sim:
         if is_luckeworld_running():
             print("LuckyRobots is already running. Skipping launch.")
         else:
@@ -62,21 +63,22 @@ def start(
         server_thread = threading.Thread(target=functools.partial(run_server, port=sim_port), daemon=True)
         server_thread.start()
     
-    # Wait for the server to start
-    max_wait_time = 10  # Maximum wait time in seconds
-    start_time = time.time()
-    while time.time() - start_time < max_wait_time:
-        try:
-            # Try to connect to the server
-            with socket.create_connection((sim_addr, sim_port), timeout=1):
-                break
-        except (ConnectionRefusedError, socket.timeout):
-            time.sleep(0.1)
-    else:
-        print("Warning: Server may not have started properly")
-    
-    # Emit the start event
-    event_emitter.emit("start")
+    if is_policy:
+        # Wait for the server to start
+        max_wait_time = 10  # Maximum wait time in seconds
+        start_time = time.time()
+        while time.time() - start_time < max_wait_time:
+            try:
+                # Try to connect to the server
+                with socket.create_connection((sim_addr, sim_port), timeout=1):
+                    break
+            except (ConnectionRefusedError, socket.timeout):
+                time.sleep(0.1)
+        else:
+            print("Warning: Server may not have started properly")
+        
+        # Emit the start event
+        event_emitter.emit("start")
 
     print("*" * 60)
     print("                                                                                ")
