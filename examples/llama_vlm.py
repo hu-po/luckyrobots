@@ -1,3 +1,14 @@
+"""
+Uses Llama 3.2 11B Vision model to zero-shot the robot from images.
+
+pip3 install accelerate
+pip3 install git+https://github.com/huggingface/transformers.git@main
+huggingface-cli login
+
+sim takes 4.5GB of GPU memory
+llama takes 22GB of GPU memory
+"""
+
 import luckyrobots as lr
 import cv2
 import numpy as np
@@ -15,10 +26,7 @@ model = MllamaForConditionalGeneration.from_pretrained(
 )
 processor = AutoProcessor.from_pretrained(model_id)
 
-prompt = """<|image|><|begin_of_text|>If I had to write a haiku for this one
-
-
-"""
+prompt = """<|image|><|begin_of_text|>You are a robot, type W to go forward, S to go backwards"""
 
 
 @lr.on("robot_output")
@@ -55,7 +63,7 @@ def handle_file_created(robot_images: list):
 
                 inputs = processor(image, prompt, return_tensors="pt").to(model.device)
 
-                output = model.generate(**inputs, max_new_tokens=30)
+                output = model.generate(**inputs, max_new_tokens=2)
                 print(processor.decode(output[0]))
                 
                 cv2.waitKey(1)  # Wait for 1ms to allow the image to be displayed
