@@ -74,7 +74,7 @@ W to go forward, S to go backwards, A to turn left, D to turn right
                     if response.status_code == 200:
                         output_text = response_json['choices'][0]['message']['content']
                         print(f"GPT-4 Response: {output_text}")
-                        lr.send_message([f"{output_text} 3600 1"])
+                        lr.send_message([[f"{output_text} 3600 1"]])
                     else:
                         print(f"Error {response.status_code}: {response_json}")
                 except Exception as e:
