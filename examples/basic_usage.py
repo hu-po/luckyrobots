@@ -20,27 +20,27 @@ def handle_robot_output(message):
     # analyze the image
     # calculate the angle and distance to the target
     # send the command to the robot
-    lr.send_message(["w 5650 1"])
+    lr.send_message([["w1 5000 5", "w2 5000 5"]])
 
 @lr.on("message")
 def handle_message(message):
     print(f"Received message: {message}", message)
     # print(robot_images["head_cam"]["contents"]["tx"])
-    lr.send_message(["w 5650 1"])
+    lr.send_message([["w1 5000 5", "w2 5000 5"]])
     
 
 @lr.on("start")
 def start():
     print("start")
-    commands = [
-        ["RESET"],
-        ["w 5650 1","a 30 1"],
-        ["A 0 1", "W 1800 1"],
-        ["w 2500 1", "d 30 1", "EX1 10", "EX2 10", "G 100 1"],
-        ["w 3000 1", "a 0 1", "u 100"],
-        ["u -200"]
-    ]
-    lr.send_message(commands)
+    # commands = [
+    #     ["RESET"],
+    #     ["w 5650 1","a 30 1"],
+    #     ["A 0 1", "W 1800 1"],
+    #     ["w 2500 1", "d 30 1", "EX1 10", "EX2 10", "G 100 1"],
+    #     ["w 3000 1", "a 0 1", "u 100"],
+    #     ["u -200"]
+    # ]
+    # lr.send_message(commands)
     
 @lr.on("tasks")
 def handle_tasks(message):
