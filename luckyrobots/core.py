@@ -19,12 +19,14 @@ from .download import check_binary
 from .library_dev import library_dev
 from .run_executable import is_luckeworld_running, run_luckeworld_executable
 
-LOCK_FILE = os.path.join(tempfile.gettempdir(), 'luckeworld_lock')
+LOCK_FILE = os.path.join(tempfile.gettempdir(), "luckeworld_lock")
+
 
 def send_message(commands):
     print("send_message", commands)
     for command in commands:
         create_instructions(command)
+
 
 def start(
     binary_path: str = None,
@@ -35,21 +37,25 @@ def start(
     is_policy: bool = True,
 ):
     if binary_path is None:
-        binary_path = check_binary()    
+        binary_path = check_binary()
     if not os.path.exists(binary_path):
-        print(f"I couldn't find the binary at {binary_path}, are you sure it's running and capture mode is on?")
+        print(
+            f"I couldn't find the binary at {binary_path}, are you sure it's running and capture mode is on?"
+        )
         os._exit(1)
 
     if sys.platform == "darwin":  # macOS
-        directory_to_watch = os.path.join(binary_path, "luckyrobots.app", "Contents", "UE", "luckyrobots", "robotdata")
+        directory_to_watch = os.path.join(
+            binary_path, "luckyrobots.app", "Contents", "UE", "luckyrobots", "robotdata"
+        )
     else:  # Windows and other platforms
         directory_to_watch = os.path.join(binary_path, "luckyrobots", "robotdata")
-    
+
     # Create the directory if it doesn't exist
     os.makedirs(directory_to_watch, exist_ok=True)
-        
+
     Handler.set_send_bytes(send_bytes)
-    
+
     if is_sim:
         if is_luckeworld_running():
             print("LuckyRobots is already running. Skipping launch.")
@@ -60,9 +66,11 @@ def start(
         library_dev()
 
         # Run the server in a separate thread
-        server_thread = threading.Thread(target=functools.partial(run_server, port=sim_port), daemon=True)
+        server_thread = threading.Thread(
+            target=functools.partial(run_server, port=sim_port), daemon=True
+        )
         server_thread.start()
-    
+
     if is_policy:
         # Wait for the server to start
         max_wait_time = 10  # Maximum wait time in seconds
@@ -76,42 +84,58 @@ def start(
                 time.sleep(0.1)
         else:
             print("Warning: Server may not have started properly")
-        
+
         # Emit the start event
         event_emitter.emit("start")
 
     print("*" * 60)
-    print("                                                                                ")
-    print("                                                                                ")
+    print(
+        "                                                                                "
+    )
+    print(
+        "                                                                                "
+    )
     print("▄▄▌  ▄• ▄▌ ▄▄· ▄ •▄  ▄· ▄▌▄▄▄        ▄▄▄▄·       ▄▄▄▄▄.▄▄ · ")
     print("██•  █▪██▌▐█ ▌▪█▌▄▌▪▐█▪██▌▀▄ █·▪     ▐█ ▀█▪▪     •██  ▐█ ▀. ")
     print("██▪  █▌▐█▌██ ▄▄▐▀▀▄·▐█▌▐█▪▐▀▀▄  ▄█▀▄ ▐█▀▀█▄ ▄█▀▄  ▐█.▪▄▀▀▀█▄")
     print("▐█▌▐▌▐█▄█▌▐███▌▐█.█▌ ▐█▀·.▐█•█▌▐█▌.▐▌██▄▪▐█▐█▌.▐▌ ▐█▌·▐█▄▪▐█")
     print(".▀▀▀  ▀▀▀ ·▀▀▀ ·▀  ▀  ▀ • .▀  ▀ ▀█▄▀▪·▀▀▀▀  ▀█▄▀▪ ▀▀▀  ▀▀▀▀ ")
-    print("                                                                                ")
-    print("                                                                                ")
+    print(
+        "                                                                                "
+    )
+    print(
+        "                                                                                "
+    )
     if platform.system() == "Darwin":
         print("*" * 60)
         print("For macOS users:")
-        print("Please be patient. The application may take up to a minute to open on its first launch.")
+        print(
+            "Please be patient. The application may take up to a minute to open on its first launch."
+        )
         print("If the application doesn't appear, please follow these steps:")
         print("1. Open System Settings")
         print("2. Navigate to Privacy & Security")
         print("3. Scroll down and click 'Allow' next to the 'luckyrobots' app")
-        print("*" * 60)    
+        print("*" * 60)
     print("Lucky Robots application started successfully.")
-    print("To move the robot from your python code, choose a level on the game, and tick the HTTP checkbox.")
-    print("To receive the camera feed from your python code, choose a level on the game, and tick the Capture checkbox.")    
+    print(
+        "To move the robot from your python code, choose a level on the game, and tick the HTTP checkbox."
+    )
+    print(
+        "To receive the camera feed from your python code, choose a level on the game, and tick the Capture checkbox."
+    )
     print("*" * 60)
-    
+
     # Check if the system is macOS
 
     watcher = Watcher(directory_to_watch)
     watcher.run()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     multiprocessing.freeze_support()
     start()
+
 
 class Watcher:
     def __init__(self, directory_path):
@@ -162,8 +186,12 @@ class Handler(FileSystemEventHandler):
     @staticmethod
     def process_file(file_path, event_type):
         file = Handler.get_file_name(file_path)
-        current_file_num = int(file.split('_')[0]) if file.split('_')[0].isdigit() else Handler.file_num
-        
+        current_file_num = (
+            int(file.split("_")[0])
+            if file.split("_")[0].isdigit()
+            else Handler.file_num
+        )
+
         if current_file_num == Handler.file_num:
             Handler.add_file(file_path)
         else:
@@ -174,7 +202,7 @@ class Handler(FileSystemEventHandler):
             Handler.emit_counter += 1
             Handler.file_num = current_file_num
             Handler.add_file(file_path)
-            
+
             # print(Handler.image_stack)
         # print(f"Processed file from {event_type} event: {file_path}")
 
@@ -182,11 +210,11 @@ class Handler(FileSystemEventHandler):
     def add_file(file_path):
         file = Handler.get_file_name(file_path)
         file_bytes = None
-        file_type = file.split('_', 1)[1].rsplit('.', 1)[0]
+        file_type = file.split("_", 1)[1].rsplit(".", 1)[0]
         if file_path not in Handler.image_stack:
-            if file.endswith('.txt'):
+            if file.endswith(".txt"):
                 try:
-                    with open(file_path, 'r') as f:
+                    with open(file_path, "r") as f:
                         file_content = f.read()
                         file_bytes = json.loads(file_content)
                 except json.JSONDecodeError:
@@ -200,9 +228,11 @@ class Handler(FileSystemEventHandler):
                     file_bytes = Handler._read_file_with_retry(file_path)
                 else:
                     file_bytes = None
-            
-            Handler.image_stack[file_type] = {"file_path": file_path, "contents": file_bytes}        
 
+            Handler.image_stack[file_type] = {
+                "file_path": file_path,
+                "contents": file_bytes,
+            }
 
     @staticmethod
     def on_deleted(event):
@@ -216,7 +246,7 @@ class Handler(FileSystemEventHandler):
     def _read_file_with_retry(file_path, retries=5, delay=1):
         for attempt in range(retries):
             try:
-                with open(file_path, 'rb') as f:
+                with open(file_path, "rb") as f:
                     content = f.read()
                     return content
             except (PermissionError, FileNotFoundError) as e:
@@ -224,6 +254,7 @@ class Handler(FileSystemEventHandler):
                 time.sleep(delay)
         else:
             print(f"Failed to read {file_path} after {retries} attempts")
+
 
 # Remove this line if remove_lock_file is not defined or used:
 # atexit.register(remove_lock_file)
