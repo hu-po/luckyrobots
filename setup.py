@@ -18,12 +18,10 @@ setup(
         "watchdog",
         "fastapi",
         "uvicorn",
-        "ultralytics",  # Added
         "requests",
         "tqdm",
         "beautifulsoup4",
         "psutil",
-        "opencv-python",
         "packaging",
     ],
     classifiers=[
