@@ -1,4 +1,9 @@
 # Lucky Robots
+
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/luckyrobots/luckyrobots/blob/main/LICENSE)
+<!-- [![Status](https://img.shields.io/pypi/status/luckyrobots)](https://pypi.org/project/luckyrobots/) -->
+[![Version](https://img.shields.io/pypi/v/luckyrobots)](https://pypi.org/project/luckyrobots/)
+
 ## A simulation platform for deploying end-to-end AI models for robotics
 
 https://github.com/user-attachments/assets/f500287b-b785-42bb-92d8-6d90b5602d6b
