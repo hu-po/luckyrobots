@@ -20,13 +20,13 @@ def handle_robot_output(message):
     # analyze the image
     # calculate the angle and distance to the target
     # send the command to the robot
+    lr.send_message(["w 5650 1"])
 
 @lr.on("message")
 def handle_message(message):
     print(f"Received message: {message}", message)
-    
-    
     # print(robot_images["head_cam"]["contents"]["tx"])
+    lr.send_message(["w 5650 1"])
     
 
 @lr.on("start")
