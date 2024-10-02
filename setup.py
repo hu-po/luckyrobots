@@ -12,8 +12,7 @@ setup(
     author="Devrim Yasar",
     author_email="braces.verbose03@icloud.com",
     url="https://github.com/lucky-robots/lucky-robots",
-    package_dir={"": "src"},
-    packages=find_packages(where="src"),
+    packages=find_packages(),
     install_requires=[
         "watchdog",
         "fastapi",

@@ -1,12 +1,155 @@
-# Python cache files
-__pycache__*
-
-# TODO: are these needed?
+# Byte-compiled / optimized / DLL files
+__pycache__/
 *.py[cod]
-/examples/LuckEWorld.app
-.DS_Store
-/src/luckyrobots/node_modules
-/dist
+*$py.class
 
-# UE5 binary files
-Binary*
+# C extensions
+*.so
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+.env/
+.ENV/
+
+# Install logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+.coverage
+.cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# PEP 582; used by e.g. python-launcher
+__pypackages__/
+
+# pyenv
+.python-version
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Eclipse
+.project
+.metadata/
+*.tmp
+*.bak
+*.swp
+
+# Build artifacts
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.opensdf
+*.sdf
+*.VC.db
+
+# Compiled source files
+*.pdb
+*.obj
+*.exe
+*.dll
+*.app
+*.lib
+*.apk
+*.dSYM/
+
+# Project files that can be generated
+*.sln
+*.suo
+*.tmp
+*.csproj
+*.vcxproj
+*.vcxproj.filters
+*.uproject.user
+*.opensdf
+*.sdf
+*.VC.db
+
+# Mac OS X
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Logs and crash reports
+*.log
+*.dmp
+
+# Backup files
+*.bak
+*.old
+
+# Temporary files
+*.tmp
+*.temp
+
+# Robotics simulation data
+SimulationData/
+Recordings/
+Logs/
+
+# Packaging output
+PackagingResults/
+
+# CSV and Excel files (if generated during simulation)
+*.csv
+*.xlsx
+
+# Ignore virtual environment folders at the root
+/venv/
+/env/
+/.venv/
+
+# Node.js (if using for any web interfaces)
+node_modules/
+
+# Generated documentation
+docs/_build/
+
+# Ignore coverage reports
+coverage/
+
+# Ignore compiled code
+*.pyc
+
+# Ignore config files (if any)
+config.ini
+settings.ini
+
+# Anaconda
+.conda/
+
+# UE5 Binaries
+Binary
